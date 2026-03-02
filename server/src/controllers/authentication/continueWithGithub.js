@@ -86,8 +86,8 @@ const authWithGithub = async (req, res) => {
     // Send cookie and redirect
     res.cookie("token", token, {
       httpOnly: true,
-      secure: false,  // true if using HTTPS
-      sameSite: 'lax',
+      secure: true,  // true if using HTTPS
+      sameSite: 'None',
       maxAge: 3600000 // 1 hour
     });
 

@@ -40,7 +40,12 @@ const register = async (req, res) => {
         } 
         
         // sending cookie
-        res.cookie("token", token, { maxAge: 3600000 });
+       res.cookie("token", token, {
+        httpOnly: true,
+        secure: true,
+        sameSite: "None",
+        maxAge: 3600000,
+        });
 
         // sending response with status code
        
