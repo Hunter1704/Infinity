@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { motion } from 'framer-motion';
 import InfinityLogo from '../components/shared/InfinityLogo';
 
@@ -12,6 +12,7 @@ import SocialButton from '../components/shared/SocialButton';
 import InputField from '../components/shared/InputField';
 import { useDispatch } from 'react-redux';
 import { loginUser } from "../slices/authSlice";
+import toast from 'react-hot-toast';
 
 // Icon Paths (Heroicons)
 const ENVELOPE_ICON_PATH = "M21.75 6.75v10.5a2.25 2.25 0 0 1-2.25 2.25h-15a2.25 2.25 0 0 1-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0 0 19.5 4.5h-15a2.25 2.25 0 0 0-2.25 2.25m19.5 0v.243a2.25 2.25 0 0 1-1.07 1.916l-7.5 4.615a2.25 2.25 0 0 1-2.36 0L3.32 8.91a2.25 2.25 0 0 1-1.07-1.916V6.75";
@@ -29,14 +30,21 @@ export const LoginPage = () => {
     resolver: zodResolver(loginSchema),
     mode: 'onBlur'
   });
+  const navigate = useNavigate();
 
   // for password visibility
   const [showPassword, setShowPassword] = useState(false);
   const togglePasswordVisibility = () => setShowPassword(!showPassword);
 
   // on Submit
-  const onSubmit = (data) => {
-    dispatch(loginUser(data));
+  const onSubmit = async (data) => {
+    try {
+      await dispatch(loginUser(data)).unwrap();
+      toast.success("Logged in successfully!");
+      navigate("/");
+    } catch (error) {
+      toast.error(error || "Login failed");
+    }
   };
 
   const handleSocialLogin = (provider) => {

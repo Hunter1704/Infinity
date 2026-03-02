@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { z } from 'zod';
-import { Link } from 'react-router';
+import { Link, useNavigate } from 'react-router';
 import { motion } from 'framer-motion';
 
 import GoogleIcon from '../components/Icons/GoogleIcon';
@@ -12,6 +12,7 @@ import InputField from '../components/shared/InputField';
 import { useDispatch } from "react-redux";
 import { registerUser } from "../slices/authSlice";
 import InfinityLogo from '../components/shared/InfinityLogo';
+import toast from 'react-hot-toast';
 
 
 // Icon Paths (Heroicons)
@@ -58,9 +59,16 @@ const SignupPage = () => {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const dispatch = useDispatch();
+  const navigate = useNavigate();
 
-  const onSubmit = (data) => {
-    dispatch(registerUser(data));
+  const onSubmit = async (data) => {
+    try {
+      await dispatch(registerUser(data)).unwrap();
+      toast.success("Account created successfully!");
+      navigate("/problems");
+    } catch (error) {
+      toast.error(error || "Registration failed");
+    }
   };
 
   const handleSocialLogin = (provider) => {
