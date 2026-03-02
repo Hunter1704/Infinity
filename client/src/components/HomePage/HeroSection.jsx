@@ -80,7 +80,7 @@ const HeroSection = () => {
             </motion.button>
           </NavLink>
 
-          <NavLink to="/login">
+          <NavLink to="/problems">
             <motion.button
               whileHover={{ scale: 1.05 }}
               whileTap={{ scale: 0.95 }}

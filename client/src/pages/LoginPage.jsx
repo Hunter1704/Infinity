@@ -39,9 +39,9 @@ export const LoginPage = () => {
   // on Submit
   const onSubmit = async (data) => {
     try {
-      await dispatch(loginUser(data)).unwrap();
+      await dispatch(loginUser(data));
       toast.success("Logged in successfully!");
-      navigate("/");
+      navigate("/problems");
     } catch (error) {
       toast.error(error || "Login failed");
     }
